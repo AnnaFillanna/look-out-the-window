@@ -19,4 +19,4 @@ A web application for searching and viewing videos from different cities at diff
 
 ## Live Demo
 
-https://annafillanna.github.io/posmotri-v-okno-fd/
+https://annafillanna.github.io/look-out-the-window/
