@@ -20,53 +20,22 @@ const moreButtonTmp = document.querySelector('.more-button-template');
 /* CITY TRANSLATIONS */
 const cityTranslations = {
   'Санкт-Петербург': 'Saint Petersburg',
-  'Москва': 'Moscow',
-  'Белгород': 'Belgorod',
-  'Адлер': 'Adler',
-  'Воронеж': 'Voronezh',
-  'Сочи': 'Sochi',
-  'Казань': 'Kazan',
-  'Самара': 'Samara',
-  'Екатеринбург': 'Yekaterinburg',
-  'Новосибирск': 'Novosibirsk',
-  'Калининград': 'Kaliningrad',
-  'Владивосток': 'Vladivostok',
-  'Краснодар': 'Krasnodar',
+  Москва: 'Moscow',
+  Белгород: 'Belgorod',
+  Адлер: 'Adler',
+  Воронеж: 'Voronezh',
+  Сочи: 'Sochi',
+  Казань: 'Kazan',
+  Самара: 'Samara',
+  Екатеринбург: 'Yekaterinburg',
+  Новосибирск: 'Novosibirsk',
+  Калининград: 'Kaliningrad',
+  Владивосток: 'Vladivostok',
+  Краснодар: 'Krasnodar',
   'Нижний Новгород': 'Nizhny Novgorod',
   'Ростов-на-Дону': 'Rostov-on-Don',
-};
-
-/* DESCRIPTION TRANSLATIONS */
-const descriptionTranslations = {
-  'Белгород ночью': 'Belgorod at night',
-  'Белгород утром': 'Belgorod in the morning',
-  'Белгород днем': 'Belgorod in the afternoon',
-  'Белгород днём': 'Belgorod in the afternoon',
-
-  'Адлер ночью': 'Adler at night',
-  'Адлер утром': 'Adler in the morning',
-  'Адлер днем': 'Adler in the afternoon',
-  'Адлер днём': 'Adler in the afternoon',
-
-  'Воронеж ночью': 'Voronezh at night',
-  'Воронеж утром': 'Voronezh in the morning',
-  'Воронеж днем': 'Voronezh in the afternoon',
-  'Воронеж днём': 'Voronezh in the afternoon',
-
-  'Санкт-Петербург ночью': 'Saint Petersburg at night',
-  'Санкт-Петербург утром': 'Saint Petersburg in the morning',
-  'Санкт-Петербург днем': 'Saint Petersburg in the afternoon',
-  'Санкт-Петербург днём': 'Saint Petersburg in the afternoon',
-
-  'Москва ночью': 'Moscow at night',
-  'Москва утром': 'Moscow in the morning',
-  'Москва днем': 'Moscow in the afternoon',
-  'Москва днём': 'Moscow in the afternoon',
-
-  'Сочи ночью': 'Sochi at night',
-  'Сочи утром': 'Sochi in the morning',
-  'Сочи днем': 'Sochi in the afternoon',
-  'Сочи днём': 'Sochi in the afternoon',
+  Дубай: 'Dubai',
+  Зеленоградск: 'Zelenogradsk',
 };
 
 /* HELPERS FOR API TEXT TRANSLATION */
@@ -75,21 +44,32 @@ function translateCity(city) {
 }
 
 function translateDescription(description, city) {
-  if (descriptionTranslations[description]) {
-    return descriptionTranslations[description];
-  }
-
   const translatedCity = translateCity(city);
+  const normalizedDescription = description.toLowerCase();
 
-  if (description.includes('утром')) {
+  if (
+    normalizedDescription.includes('утро') ||
+    normalizedDescription.includes('утром')
+  ) {
     return `${translatedCity} in the morning`;
   }
 
-  if (description.includes('ночью')) {
+  if (
+    normalizedDescription.includes('ночь') ||
+    normalizedDescription.includes('ночью') ||
+    normalizedDescription.includes('ночной') ||
+    normalizedDescription.includes('ночная')
+  ) {
     return `${translatedCity} at night`;
   }
 
-  if (description.includes('днем') || description.includes('днём')) {
+  if (
+    normalizedDescription.includes('день') ||
+    normalizedDescription.includes('днем') ||
+    normalizedDescription.includes('днём') ||
+    normalizedDescription.includes('дневной') ||
+    normalizedDescription.includes('дневная')
+  ) {
     return `${translatedCity} in the afternoon`;
   }
 
@@ -172,7 +152,6 @@ async function mainMechanics(endpoint) {
     removePreloader(videoContainer, '.preloader');
     removePreloader(cardsContainer, '.preloader');
 
-    // Adds custom scrollbar styling
     cardsContainer.classList.add('custom-scrollbar');
 
     chooseCurrentVideo({
@@ -190,7 +169,7 @@ async function mainMechanics(endpoint) {
       buttonSelector: '.more-button',
       initialEndpoint: endpoint,
       baseUrl: BASE_URL,
-      cardTmp: cardTmp,
+      cardTmp,
     });
   } catch (err) {
     if (err.message === 'not-found') {
@@ -216,21 +195,18 @@ async function mainMechanics(endpoint) {
 
 /* UTILITIES */
 
-// Simple delay helper
 async function delay(ms) {
   return await new Promise((resolve) => {
     return setTimeout(resolve, ms);
   });
 }
 
-// Resolves when the video is ready to play without interruption
 async function waitForReadyVideo(video) {
   return await new Promise((resolve) => {
     video.oncanplaythrough = resolve;
   });
 }
 
-// Shows a preloader while data is loading
 function showPreloader(tmp, parent) {
   const node = tmp.content.cloneNode(true);
   parent.append(node);
@@ -238,7 +214,6 @@ function showPreloader(tmp, parent) {
   console.log('Preloader displayed');
 }
 
-// Removes the preloader from the DOM
 function removePreloader(parent, preloaderSelector) {
   const preloader = parent.querySelector(preloaderSelector);
 
@@ -249,7 +224,6 @@ function removePreloader(parent, preloaderSelector) {
   console.log('Preloader removed');
 }
 
-// Creates and appends cards using API data
 function appendCards({ baseUrl, dataArray, cardTmp, container }) {
   dataArray.forEach((el) => {
     const node = cardTmp.content.cloneNode(true);
@@ -282,7 +256,6 @@ function appendCards({ baseUrl, dataArray, cardTmp, container }) {
   console.log('Cards generated');
 }
 
-// Sets the selected video in the main video container
 function setVideo({ baseUrl, video, videoUrl, posterUrl }) {
   video.setAttribute('src', `${baseUrl}${videoUrl}`);
   video.setAttribute('poster', `${baseUrl}${posterUrl}`);
@@ -290,13 +263,17 @@ function setVideo({ baseUrl, video, videoUrl, posterUrl }) {
   console.log('Main video updated');
 }
 
-// Reads and serializes form data
 function serializeFormData(form) {
   const city = form.querySelector('input[name="city"]');
-  const checkboxes = form.querySelectorAll('input[name="time"]');
+  const checkboxes = form.querySelectorAll(
+    'input[type="checkbox"]'
+  );
 
   const checkedValuesArray = [...checkboxes].reduce((acc, item) => {
-    item.checked && acc.push(item.value);
+    if (item.checked) {
+      acc.push(item.value);
+    }
+
     return acc;
   }, []);
 
@@ -308,24 +285,24 @@ function serializeFormData(form) {
   };
 }
 
-// Generates the API request URL using selected filters
 function generateFilterRequest(endpoint, city, timeArray) {
+  let requestUrl = endpoint;
+
   if (city) {
-    endpoint += `filters[city][$containsi]=${city}&`;
+    requestUrl += `filters[city][$containsi]=${encodeURIComponent(city)}&`;
   }
 
-  if (timeArray) {
+  if (timeArray.length) {
     timeArray.forEach((timeslot) => {
-      endpoint += `filters[time_of_day][$eqi]=${timeslot}&`;
+      requestUrl += `filters[time_of_day][$eqi]=${timeslot}&`;
     });
   }
 
   console.log('API request URL generated');
 
-  return endpoint;
+  return requestUrl;
 }
 
-// Switches the currently selected video
 function chooseCurrentVideo({
   baseUrl,
   videoData,
@@ -370,7 +347,6 @@ function chooseCurrentVideo({
   }
 }
 
-// Displays an error when no video is found
 function showError(container, errorTemplate, errorMessage) {
   const node = errorTemplate.content.cloneNode(true);
 
@@ -381,7 +357,6 @@ function showError(container, errorTemplate, errorMessage) {
   console.log('Error displayed');
 }
 
-// Loads more videos when additional pagination pages are available
 function showMoreCards({
   dataArray,
   buttonTemplate,
@@ -395,19 +370,17 @@ function showMoreCards({
     return;
   }
 
-  // Adds the "Show More" button after the cards
   const button = buttonTemplate.content.cloneNode(true);
 
   cardsContainer.append(button);
 
-  // Finds the button in the DOM and adds a click listener
   const buttonInDOM = cardsContainer.querySelector(buttonSelector);
 
   buttonInDOM.addEventListener('click', async () => {
-    // Requests the next page of videos
     let currentPage = dataArray.pagination.page;
 
-    let urlToFetch = `${initialEndpoint}pagination[page]=${(currentPage += 1)}&`;
+    const urlToFetch =
+      `${initialEndpoint}pagination[page]=${currentPage + 1}&`;
 
     try {
       const data = await (await fetch(urlToFetch)).json();
@@ -441,7 +414,7 @@ function showMoreCards({
         cardTmp,
       });
     } catch (err) {
-      return err;
+      console.log(err);
     }
   });
 }
