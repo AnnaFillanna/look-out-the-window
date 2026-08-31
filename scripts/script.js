@@ -4,47 +4,6 @@ const cardsOnPage = 5;
 const BASE_URL = 'https://v-content.practicum-team.ru';
 const endpoint = `${BASE_URL}/api/videos?pagination[pageSize]=${cardsOnPage}&`;
 
-/* CITY TRANSLATIONS */
-const cityTranslations = {
-  'Белгород': 'Belgorod',
-  'Адлер': 'Adler',
-  'Воронеж': 'Voronezh',
-  'Санкт-Петербург': 'Saint Petersburg',
-  'Москва': 'Moscow',
-  'Казань': 'Kazan',
-  'Сочи': 'Sochi',
-};
-
-/* DESCRIPTION TRANSLATIONS */
-const descriptionTranslations = {
-  'ночной Белгород': 'Belgorod at night',
-  'Белгород ночью': 'Belgorod at night',
-  'Адлер утром': 'Adler in the morning',
-  'Адлер днем': 'Adler in the afternoon',
-  'Адлер днём': 'Adler in the afternoon',
-  'Адлер ночью': 'Adler at night',
-  'Воронеж утром': 'Voronezh in the morning',
-  'Воронеж днем': 'Voronezh in the afternoon',
-  'Воронеж днём': 'Voronezh in the afternoon',
-  'Воронеж ночью': 'Voronezh at night',
-  'Санкт-Петербург утром': 'Saint Petersburg in the morning',
-  'Санкт-Петербург днем': 'Saint Petersburg in the afternoon',
-  'Санкт-Петербург днём': 'Saint Petersburg in the afternoon',
-  'Санкт-Петербург ночью': 'Saint Petersburg at night',
-  'Москва утром': 'Moscow in the morning',
-  'Москва днем': 'Moscow in the afternoon',
-  'Москва днём': 'Moscow in the afternoon',
-  'Москва ночью': 'Moscow at night',
-  'Казань утром': 'Kazan in the morning',
-  'Казань днем': 'Kazan in the afternoon',
-  'Казань днём': 'Kazan in the afternoon',
-  'Казань ночью': 'Kazan at night',
-  'Сочи утром': 'Sochi in the morning',
-  'Сочи днем': 'Sochi in the afternoon',
-  'Сочи днём': 'Sochi in the afternoon',
-  'Сочи ночью': 'Sochi at night',
-};
-
 /* PAGE ELEMENTS */
 const cardsList = document.querySelector('.content__list');
 const cardsContainer = document.querySelector('.content__list-container');
@@ -58,9 +17,88 @@ const preloaderTmp = document.querySelector('.preloader-template');
 const videoNotFoundTmp = document.querySelector('.error-template');
 const moreButtonTmp = document.querySelector('.more-button-template');
 
+/* CITY TRANSLATIONS */
+const cityTranslations = {
+  'Санкт-Петербург': 'Saint Petersburg',
+  'Москва': 'Moscow',
+  'Белгород': 'Belgorod',
+  'Адлер': 'Adler',
+  'Воронеж': 'Voronezh',
+  'Сочи': 'Sochi',
+  'Казань': 'Kazan',
+  'Самара': 'Samara',
+  'Екатеринбург': 'Yekaterinburg',
+  'Новосибирск': 'Novosibirsk',
+  'Калининград': 'Kaliningrad',
+  'Владивосток': 'Vladivostok',
+  'Краснодар': 'Krasnodar',
+  'Нижний Новгород': 'Nizhny Novgorod',
+  'Ростов-на-Дону': 'Rostov-on-Don',
+};
+
+/* DESCRIPTION TRANSLATIONS */
+const descriptionTranslations = {
+  'Белгород ночью': 'Belgorod at night',
+  'Белгород утром': 'Belgorod in the morning',
+  'Белгород днем': 'Belgorod in the afternoon',
+  'Белгород днём': 'Belgorod in the afternoon',
+
+  'Адлер ночью': 'Adler at night',
+  'Адлер утром': 'Adler in the morning',
+  'Адлер днем': 'Adler in the afternoon',
+  'Адлер днём': 'Adler in the afternoon',
+
+  'Воронеж ночью': 'Voronezh at night',
+  'Воронеж утром': 'Voronezh in the morning',
+  'Воронеж днем': 'Voronezh in the afternoon',
+  'Воронеж днём': 'Voronezh in the afternoon',
+
+  'Санкт-Петербург ночью': 'Saint Petersburg at night',
+  'Санкт-Петербург утром': 'Saint Petersburg in the morning',
+  'Санкт-Петербург днем': 'Saint Petersburg in the afternoon',
+  'Санкт-Петербург днём': 'Saint Petersburg in the afternoon',
+
+  'Москва ночью': 'Moscow at night',
+  'Москва утром': 'Moscow in the morning',
+  'Москва днем': 'Moscow in the afternoon',
+  'Москва днём': 'Moscow in the afternoon',
+
+  'Сочи ночью': 'Sochi at night',
+  'Сочи утром': 'Sochi in the morning',
+  'Сочи днем': 'Sochi in the afternoon',
+  'Сочи днём': 'Sochi in the afternoon',
+};
+
+/* HELPERS FOR API TEXT TRANSLATION */
+function translateCity(city) {
+  return cityTranslations[city] || city;
+}
+
+function translateDescription(description, city) {
+  if (descriptionTranslations[description]) {
+    return descriptionTranslations[description];
+  }
+
+  const translatedCity = translateCity(city);
+
+  if (description.includes('утром')) {
+    return `${translatedCity} in the morning`;
+  }
+
+  if (description.includes('ночью')) {
+    return `${translatedCity} at night`;
+  }
+
+  if (description.includes('днем') || description.includes('днём')) {
+    return `${translatedCity} in the afternoon`;
+  }
+
+  return description;
+}
+
 /* MAIN LOGIC */
 
-// Stores loaded cards for switching between videos
+// Stores all currently loaded cards
 let cardsOnPageState = [];
 
 // Initial load
@@ -68,7 +106,7 @@ showPreloader(preloaderTmp, videoContainer);
 showPreloader(preloaderTmp, cardsContainer);
 mainMechanics(endpoint);
 
-// Search
+// Search form submission
 form.onsubmit = (e) => {
   e.preventDefault();
 
@@ -98,7 +136,7 @@ form.onsubmit = (e) => {
   mainMechanics(requestUrl);
 };
 
-/* MAIN DATA HANDLING FUNCTION */
+/* MAIN DATA HANDLER */
 
 async function mainMechanics(endpoint) {
   try {
@@ -165,7 +203,7 @@ async function mainMechanics(endpoint) {
       showError(
         videoContainer,
         videoNotFoundTmp,
-        'Failed to load data :('
+        'Error loading data :('
       );
     }
 
@@ -178,7 +216,7 @@ async function mainMechanics(endpoint) {
 
 /* UTILITIES */
 
-// Simple promise used to create a delay
+// Simple delay helper
 async function delay(ms) {
   return await new Promise((resolve) => {
     return setTimeout(resolve, ms);
@@ -192,7 +230,7 @@ async function waitForReadyVideo(video) {
   });
 }
 
-// Displays a preloader while data is loading
+// Shows a preloader while data is loading
 function showPreloader(tmp, parent) {
   const node = tmp.content.cloneNode(true);
   parent.append(node);
@@ -211,47 +249,16 @@ function removePreloader(parent, preloaderSelector) {
   console.log('Preloader removed');
 }
 
-// Returns an English city name when a translation is available
-function translateCity(city) {
-  return cityTranslations[city] || city;
-}
-
-// Returns an English description when a translation is available
-function translateDescription(description) {
-  if (descriptionTranslations[description]) {
-    return descriptionTranslations[description];
-  }
-
-  let translatedDescription = description;
-
-  Object.entries(cityTranslations).forEach(([russianCity, englishCity]) => {
-    translatedDescription = translatedDescription.replace(
-      russianCity,
-      englishCity
-    );
-  });
-
-  translatedDescription = translatedDescription
-    .replace(/ночью/gi, 'at night')
-    .replace(/ночной/gi, 'at night')
-    .replace(/утром/gi, 'in the morning')
-    .replace(/утренний/gi, 'in the morning')
-    .replace(/днем/gi, 'in the afternoon')
-    .replace(/днём/gi, 'in the afternoon')
-    .replace(/дневной/gi, 'in the afternoon')
-    .replace(/вечером/gi, 'in the evening')
-    .replace(/вечерний/gi, 'in the evening');
-
-  return translatedDescription;
-}
-
-// Creates and appends video cards using API data
+// Creates and appends cards using API data
 function appendCards({ baseUrl, dataArray, cardTmp, container }) {
   dataArray.forEach((el) => {
     const node = cardTmp.content.cloneNode(true);
 
     const translatedCity = translateCity(el.city);
-    const translatedDescription = translateDescription(el.description);
+    const translatedDescription = translateDescription(
+      el.description,
+      el.city
+    );
 
     node.querySelector('a').setAttribute('id', el.id);
 
@@ -272,7 +279,7 @@ function appendCards({ baseUrl, dataArray, cardTmp, container }) {
     container.append(node);
   });
 
-  console.log('Video cards generated');
+  console.log('Cards generated');
 }
 
 // Sets the selected video in the main video container
@@ -283,13 +290,10 @@ function setVideo({ baseUrl, video, videoUrl, posterUrl }) {
   console.log('Main video updated');
 }
 
-// Gets and serializes data from the search form
+// Reads and serializes form data
 function serializeFormData(form) {
   const city = form.querySelector('input[name="city"]');
-
-  const checkboxes = form.querySelectorAll(
-    '.search-form__checkbox'
-  );
+  const checkboxes = form.querySelectorAll('input[name="time"]');
 
   const checkedValuesArray = [...checkboxes].reduce((acc, item) => {
     item.checked && acc.push(item.value);
@@ -304,19 +308,19 @@ function serializeFormData(form) {
   };
 }
 
-// Generates an API request URL based on the selected filters
+// Generates the API request URL using selected filters
 function generateFilterRequest(endpoint, city, timeArray) {
   if (city) {
     endpoint += `filters[city][$containsi]=${city}&`;
   }
 
-  if (timeArray.length) {
+  if (timeArray) {
     timeArray.forEach((timeslot) => {
       endpoint += `filters[time_of_day][$eqi]=${timeslot}&`;
     });
   }
 
-  console.log('Filtered API request URL generated');
+  console.log('API request URL generated');
 
   return endpoint;
 }
@@ -374,7 +378,7 @@ function showError(container, errorTemplate, errorMessage) {
 
   container.append(node);
 
-  console.log('Error message displayed');
+  console.log('Error displayed');
 }
 
 // Loads more videos when additional pagination pages are available
@@ -391,12 +395,12 @@ function showMoreCards({
     return;
   }
 
-  // Adds the "Show More" button
+  // Adds the "Show More" button after the cards
   const button = buttonTemplate.content.cloneNode(true);
 
   cardsContainer.append(button);
 
-  // Selects the added button and attaches a click handler
+  // Finds the button in the DOM and adds a click listener
   const buttonInDOM = cardsContainer.querySelector(buttonSelector);
 
   buttonInDOM.addEventListener('click', async () => {
@@ -406,7 +410,7 @@ function showMoreCards({
     let urlToFetch = `${initialEndpoint}pagination[page]=${(currentPage += 1)}&`;
 
     try {
-      let data = await (await fetch(urlToFetch)).json();
+      const data = await (await fetch(urlToFetch)).json();
 
       buttonInDOM.remove();
 
