@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Посмотри в окно</title>
+    <title>Look Out the Window</title>
     <link rel="stylesheet" href="./fonts/fonts.css" />
     <link rel="stylesheet" href="./styles/style.css" />
     <link rel="stylesheet" href="./styles/preloader.css" />
@@ -13,25 +13,29 @@
   <body class="page">
     <main class="content">
       <section class="result">
-        <h2 class="visually-hidden">Результат поиска</h2>
+        <h2 class="visually-hidden">Search Results</h2>
         <div class="result__video-container">
           <video controls class="result__video"></video>
         </div>
+
         <form class="search-form">
           <fieldset class="search-form__fieldset">
-            <legend class="search-form__fieldset-title">Город</legend>
+            <legend class="search-form__fieldset-title">City</legend>
+
             <label class="search-form__label">
-              <span class="search-form__label-text visually-hidden">Город</span>
+              <span class="search-form__label-text visually-hidden">City</span>
               <input
                 type="text"
-                placeholder="Санкт-Петербург, например"
+                placeholder="Saint Petersburg, for example"
                 name="city"
                 class="search-form__textfield"
               />
             </label>
           </fieldset>
+
           <fieldset class="search-form__fieldset">
-            <legend class="search-form__fieldset-title">Время суток</legend>
+            <legend class="search-form__fieldset-title">Time of Day</legend>
+
             <ul class="search-form__checkbox-list">
               <li class="search-form__checkbox-list-item">
                 <label class="search-form__label">
@@ -42,9 +46,10 @@
                     class="search-form__checkbox visually-hidden"
                   />
                   <span class="search-form__pseudo-checkbox"></span>
-                  <span class="search-form__label-text">Утро</span>
+                  <span class="search-form__label-text">Morning</span>
                 </label>
               </li>
+
               <li class="search-form__checkbox-list-item">
                 <label class="search-form__label">
                   <input
@@ -54,9 +59,10 @@
                     class="search-form__checkbox visually-hidden"
                   />
                   <span class="search-form__pseudo-checkbox"></span>
-                  <span class="search-form__label-text">День</span>
+                  <span class="search-form__label-text">Afternoon</span>
                 </label>
               </li>
+
               <li class="search-form__checkbox-list-item">
                 <label class="search-form__label">
                   <input
@@ -66,29 +72,32 @@
                     class="search-form__checkbox visually-hidden"
                   />
                   <span class="search-form__pseudo-checkbox"></span>
-                  <span class="search-form__label-text">Ночь</span>
+                  <span class="search-form__label-text">Night</span>
                 </label>
               </li>
             </ul>
           </fieldset>
+
           <button type="submit" class="button search-form__submit-button">
-            Найти
+            Search
           </button>
         </form>
       </section>
+
       <section class="content__details">
         <h1 class="title">
-          <span class="content__accent">По-</span><br />смотри<br />в окно
+          <span class="content__accent">Look</span><br />out the<br />window
         </h1>
+
         <div class="content__list-container">
           <ul class="content__list">
-            <!-- ЗДЕСЬ ОКАЖУТСЯ ТЕМПЛЕЙТЫ КАРТОЧЕК -->
+            <!-- CARD TEMPLATES WILL BE ADDED HERE -->
           </ul>
         </div>
       </section>
     </main>
 
-    <!-- ТЕМПЛЕЙТЫ -->
+    <!-- TEMPLATES -->
 
     <template class="preloader-template">
       <div class="preloader">
@@ -100,27 +109,34 @@
         </div>
       </div>
     </template>
+
     <template class="cards-list-item-template">
       <li class="content__list-item">
         <a href="#" class="content__card-link">
           <article class="content__video-card">
             <div class="content__video-card-description-container">
-              <h2 class="content__video-card-title">Заголовок видео</h2>
-              <p class="content__video-card-description">Описание видео</p>
+              <h2 class="content__video-card-title">Video Title</h2>
+              <p class="content__video-card-description">
+                Video Description
+              </p>
             </div>
+
             <img src="#" alt="" class="content__video-card-thumbnail" />
           </article>
         </a>
       </li>
     </template>
+
     <template class="more-button-template">
-      <button type="button" class="button more-button">Показать еще</button>
+      <button type="button" class="button more-button">Show More</button>
     </template>
+
     <template class="error-template">
       <div class="error">
-        <h2 class="error__title">Из этого города нет видео :(</h2>
+        <h2 class="error__title">No videos found for this city :(</h2>
       </div>
     </template>
+
     <script src="./scripts/script.js"></script>
   </body>
 </html>
