@@ -125,6 +125,19 @@ ol {
   margin-top: 4px;
 }
 
+.button {
+  width: 100%;
+  min-height: 34px;
+  background-color: transparent;
+  border: 1px solid #fff;
+  font-family: "Fira Sans Condensed", sans-serif;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 400;
+  padding: 3px 0;
+  cursor: pointer;
+}
+
 .search-form__fieldset {
   display: flex;
   flex-direction: column;
@@ -224,19 +237,6 @@ ol {
   cursor: pointer;
   border-bottom: none;
   margin-top: 10px;
-}
-
-.button {
-  width: 100%;
-  min-height: 34px;
-  background-color: transparent;
-  border: 1px solid #fff;
-  font-family: "Fira Sans Condensed", sans-serif;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 400;
-  padding: 3px 0;
-  cursor: pointer;
 }
 
 .button:active {
