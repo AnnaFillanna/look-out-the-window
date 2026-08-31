@@ -120,7 +120,7 @@ ol {
 
 .search-form__submit-button {
   width: 150px;
-  justify-self: stretch;
+  justify-self: end;
   align-self: end;
   margin-top: 4px;
 }
