@@ -41,7 +41,7 @@ ol {
   list-style: none;
 }
 
-/* Кастомный скроллбар */
+/* scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
@@ -119,7 +119,7 @@ ol {
 }
 
 .search-form__submit-button {
-  width: 100%;
+  width: 194px;
   justify-self: stretch;
   align-self: end;
   margin-top: 4px;
